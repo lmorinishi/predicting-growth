@@ -1,0 +1,13 @@
+name: "companyX-growth"
+output_dir: docs
+navbar:
+  title: "companyX-growth"
+  left:
+    - text: "About"
+      href: index.html
+    - text: "First look"
+      href: firstlook.html
+    - text: "Fraud"
+      href: fraud.html
+output: html_document
+theme: jekyll-theme-slate

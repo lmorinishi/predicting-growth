@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>A first look at the data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">companyX-growth</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">About</a>
+</li>
+<li>
+  <a href="firstlook.html">First look</a>
+</li>
+<li>
+  <a href="fraud.html">Fraud</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">A first look at the data</h1>
+
+</div>
+
+
+<div id="data-preparation" class="section level3">
+<h3>Data preparation</h3>
+<div id="import-data-overview-stats" class="section level4">
+<h4>1. Import data &amp; overview stats</h4>
+<pre class="r"><code># Attach relevant packages
+suppressPackageStartupMessages(library(lubridate))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(ggplot2))
+
+# Read in table, and make new datetime column from ISO8601 time character
+df = read.table(&quot;data/case_final (1).csv&quot;, header=T, sep=&quot;,&quot;, as.is=T)
+
+df$username = df$user  # save string
+df$user = as.numeric(as.factor(df$user))  # convert user string to factor for simpler human reading
+df$DateTime = as_datetime(df$time)  # convert time string to datetime
+df = df[order(df$DateTime),]  # order all transactions in time
+
+# Print out basic observations about dataset
+cat(&quot;There are&quot;, nrow(df), &quot;observations in the dataset, and&quot;, length(unique(df$user)), &quot;unique users in the dataset.\n&quot;, sep=&quot; &quot;)</code></pre>
+<pre><code>## There are 1524710 observations in the dataset, and 8402 unique users in the dataset.</code></pre>
+<pre class="r"><code>cat(&quot;There are&quot;, sum(is.na(df)), &quot;missing values.\n&quot;, sep=&quot; &quot;)</code></pre>
+<pre><code>## There are 0 missing values.</code></pre>
+<pre class="r"><code>cat(&quot;There are&quot;, sum(df$amount_in_cents == 0), &quot;transactions that were for $0.00.\n&quot;, sep=&quot; &quot;)</code></pre>
+<pre><code>## There are 6521 transactions that were for $0.00.</code></pre>
+</div>
+<div id="extract-interesting-featuers" class="section level4">
+<h4>2. Extract interesting featuers</h4>
+<p>The original dataset has the user number, time of transaction, and transaction amount in cents.</p>
+<p>First, I extracted some useful information in new columns based on the time feature. These included:</p>
+<ul>
+<li>the financial quarter in which the transaction occurred, etc,</li>
+<li>the time since the last transaction for each user,</li>
+<li>the time to the next transaction for each user.</li>
+</ul>
+<p>Then, I looked at ways to summarize patterns in transactions per user. This included:</p>
+<ul>
+<li>total number of transactions per user,</li>
+<li>the mean time between transactions per user,</li>
+<li>total revenue for CompanyX per user, etc.</li>
+</ul>
+<p><strong>Initial observations:</strong></p>
+<ul>
+<li>many users <em>only use CompanyX once</em>,</li>
+<li>users use CompanyX for <em>stereotypical lengths of time</em>,</li>
+<li>while user sales can be very volatile hour to hour, most users see <em>max transaction activity in one of two times of day</em>,</li>
+<li><em>time between previous transactions</em> has some relationship with time to next transaction.</li>
+<li>what do the <em>most recent transactions</em> say about how the user will do in the future?</li>
+</ul>
+<pre class="r"><code>df = df %&gt;% group_by(user, username) %&gt;% 
+  mutate(total_transactions = n(),
+         repeat_user = cut(total_transactions, c(0, 1, 10, Inf)),
+         year = year(DateTime),
+         quarter = quarter(DateTime),
+         month = month(DateTime),
+         week = week(DateTime),
+         yday = yday(DateTime),
+         date = mday(DateTime),
+         day = wday(DateTime, label=TRUE),
+         hour = hour(DateTime),
+         user_start_time = min(DateTime),
+         user_start_date = as.Date(user_start_time),
+         time_since_start = difftime(DateTime, user_start_time),
+         days_since_start = difftime(DateTime, user_start_date, units=&quot;days&quot;),
+         time_since_last_transaction = difftime(DateTime, lag(DateTime), units=&quot;secs&quot;),
+         time_to_next_transaction = difftime(lead(DateTime), DateTime), units=&quot;secs&quot;,
+         company_x_revenue = 0.25 + 0.025*amount_in_cents)
+
+# For back-testing, decided to use aggregate features of the latter 25% of the year for prediction
+end_time = as.numeric(max(df$time_since_start)*0.75)
+df$time_to_end = as.numeric(end_time - df$time_since_start)
+
+df$is_weekend = df$day %in% c(&quot;Sat&quot;, &quot;Sun&quot;)
+
+df$month = factor(df$month, levels=1:12)
+df$year = factor(df$year, levels=c(2015, 2016, 2017))
+df$weekday = factor(&quot;other&quot;, levels=c(&quot;TueWed&quot;, &quot;other&quot;))
+df$weekday[df$day %in% c(&quot;Tue&quot;, &quot;Wed&quot;)] = &quot;TueWed&quot;
+df$days_since_start = floor(df$days_since_start)
+df$days_since = as.numeric(floor(df$time_since_start/86400))
+df = df %&gt;% group_by(user) %&gt;% mutate(transaction_n = 1:n())
+
+df$user_start_yday = yday(df$user_start_time)
+df$user_start_wday = wday(df$user_start_time, label=TRUE)
+df$user_start_month = month(df$user_start_time)
+df$user_start_year = year(df$user_start_time)
+
+df$hours_since_last_transaction = as.numeric(df$time_since_last_transaction)/60/60
+df$amount_in_dollars = as.numeric(df$amount_in_cents)/100
+
+df$start_day = &quot;other&quot;
+df$start_day[df$user_start_wday %in% c(&quot;Fri&quot;, &quot;Sun&quot;)] = &quot;FriSun&quot;
+
+df = df %&gt;% group_by(user, username) %&gt;%
+  mutate(perc_0 = sum(amount_in_dollars==0)/total_transactions,
+         cumsum_revenue = cumsum(company_x_revenue))
+
+saveRDS(df, file=&quot;data/df.rds&quot;)</code></pre>
+</div>
+<div id="data-summary" class="section level4">
+<h4>3. Data summary</h4>
+<p>The dataset has the user tag, time of transaction, and transaction amount in cents.</p>
+<p>First, I extracted some useful information in new columns based on the time feature. These included:</p>
+<ul>
+<li>the financial quarter in which the transaction occurred, etc,</li>
+<li>the time since the last transaction for each user,</li>
+<li>the time to the next transaction for each user.</li>
+</ul>
+<p>Then, I looked at ways to summarize patterns in transactions per user. This included:</p>
+<ul>
+<li>total number of transactions per user,</li>
+<li>the mean time between transactions per user,</li>
+<li>total revenue for CompanyX per user, etc.</li>
+</ul>
+<p><strong>Initial observations:</strong></p>
+<ul>
+<li>many users <em>only use CompanyX once</em>,</li>
+<li>users use CompanyX for <em>stereotypical lengths of time</em>,</li>
+<li>while user sales can be very volatile hour to hour, most users see <em>max transaction activity in one of two times of day</em>,</li>
+<li><em>time between previous transactions</em> has some relationship with time to next transaction.</li>
+<li>what do the <em>most recent transactions</em> say about how the user will do in the future?</li>
+</ul>
+<pre class="r"><code>user_summary = df %&gt;% ungroup %&gt;% 
+  select(user, user_start_date, total_transactions, repeat_user, 
+         start_day, perc_0) %&gt;% distinct() %&gt;%
+  group_by(user) %&gt;%
+  mutate(user_anniversary = seq(user_start_date, length=2, by=(&quot;1 years&quot;))[2])
+first75 = df[df$time_to_end &gt; 0,]
+df_summary = first75 %&gt;% group_by(user) %&gt;% 
+  summarize(active_user_time = as.duration(max(DateTime) - min(DateTime)),
+            time_since_final_transaction = min(time_to_end),
+            amount_in_dollars_mean = mean(amount_in_dollars),
+            amount_in_cents_sd = sd(amount_in_dollars),
+            total_sale = sum(amount_in_dollars),
+            time_between_transactions_mean = mean(hours_since_last_transaction, na.rm=T),
+            time_between_transactions_median = median(hours_since_last_transaction, na.rm=T),
+            time_between_transactions_sd = sd(hours_since_last_transaction, na.rm=T),
+            transactions_per_day = n()/(as.numeric(active_user_time)/86400),  # 86400 seconds/day
+            total_CompanyX_revenue = max(cumsum_revenue))
+df_summary = merge(df_summary, user_summary, by=&quot;user&quot;)
+
+
+# Get hour of maximum activity
+max_count = df %&gt;% group_by(user, hour) %&gt;% filter(total_transactions &gt; 2) %&gt;% 
+  summarize(hourly_count = n()) %&gt;% filter(hourly_count == max(hourly_count)) %&gt;% 
+  rename(max_hour=hour) %&gt;% group_by(user) %&gt;% mutate(max_hour = mean(max_hour)) %&gt;% unique()
+df_summary = merge(df_summary, max_count[,c(&quot;user&quot;, &quot;max_hour&quot;)], by=c(&quot;user&quot;), all.x=T)
+
+# Get summary features for latter 25% of the year, label churn if no transactions occur in that time period
+last25 = df[df$time_to_end &lt; 0,]
+last25 = last25 %&gt;% group_by(user) %&gt;% 
+  summarize(n_transactions = n(),
+            cumsum_revenue = max(cumsum_revenue) - min(cumsum_revenue),
+            active_time = max(time_since_start) - min(time_since_start),
+            avg_transaction = mean(amount_in_dollars))
+
+churned = data.frame(user=unique(df$user[!(df$user %in% last25$user)]),
+                     n_transactions=0,
+                     cumsum_revenue=0,
+                     active_time=0,
+                     avg_transaction=0)
+last25 = rbind(last25, churned)
+last25$cumsum_revenue = log(last25$cumsum_revenue + 0.1)
+last25$label = factor(&quot;churned&quot;, levels=c(&quot;churned&quot;, &quot;active&quot;))
+last25$label[last25$cumsum_revenue &gt; 0] = &quot;active&quot;
+
+# Set levels for more intuitive visualization
+df_summary$repeat_user = as.factor(df_summary$repeat_user)
+levels(df_summary$repeat_user) = c(&quot;Once&quot;, &quot;2-10 transactions&quot;, &quot;10+ transactions&quot;)</code></pre>
+<p><strong>Many users only use CompanyX once</strong> Below is a histogram showing how many users used CompanyX for how long (in days), separated by how many total transactions they processed with CompanyX. 19% of new users only use CompanyX for a single transaction! 1/3 of new users only used CompanyX 2-10 times total. Therefore a valuable feature will be whether CompanyX users processed 1, 2-10, or 10+ transactions in the past year.</p>
+<pre class="r"><code># Histogram of days of total user use, by whether they had more than 1 transaction
+ggplot(df_summary, aes(as.numeric(active_user_time)/86400)) +  # 86400 seconds in a day
+  geom_histogram(bins=30) + theme_classic() + 
+  ylab(&quot;# of users&quot;) +
+  scale_y_continuous(expand=c(0,0)) + labs(x=&quot;Days of total user use&quot;) + facet_grid(vars(repeat_user))</code></pre>
+<p><img src="firstlook_files/figure-html/days%20of%20user%20use-1.png" width="672" /></p>
+<pre class="r"><code>cat(round(sum(df_summary$repeat_user==&quot;Once&quot;)/nrow(df_summary) *100, 2), &quot;% of users use CompanyX only once!\n&quot;, sep=&quot;&quot;)  # 19.15%</code></pre>
+<pre><code>## 19.15% of users use CompanyX only once!</code></pre>
+<pre class="r"><code>cat(round(sum(df_summary$repeat_user==&quot;2-10 transactions&quot;)/nrow(df_summary) *100, 2), &quot;% of users use CompanyX &lt;=10 times.\n&quot;, sep=&quot;&quot;)  # 19.15%</code></pre>
+<pre><code>## 33.69% of users use CompanyX &lt;=10 times.</code></pre>
+<p><strong>How long users use CompanyX</strong> Above, we see that users may be processing transactions with CompanyX for 1 day, for 1-2 months, for many months, or for nearly the entire year. We will probably want to use quantiles to bin user use over time into stereotypical categories.</p>
+<p><strong>Transactions over the course of a day</strong> As I mentioned above, looking at the number of transactions over the course of a day may reflect the time zone of the user’s target market. Here we look at a sampling of ~100 users’ activity binned by hour, and note that activity can be highly variable hour to hour.</p>
+<pre class="r"><code># sample 100 users and look at transaction activity binned by hour in a day
+users100=sample(unique(df$user), 100)
+x = subset(df, user %in% users100 &amp; total_transactions &gt; 2)
+ggplot(x, aes(x=hour, group=user, color=user)) + geom_density() + theme_bw()</code></pre>
+<p><img src="firstlook_files/figure-html/transactions%20in%20a%20day-1.png" width="672" /></p>
+<p>One could imagine using unsupervised clustering technique of normalized vectors of transactions/hour to try and find patterns of activity across users. So far this hasn’t come out clean. For now, I chose to bin a user’s transactions by hour in the day, and note only the hour in which maximum activity occurred.</p>
+<pre class="r"><code>df_summary %&gt;% filter(total_transactions &gt; 2) %&gt;% 
+  ggplot(aes(x=max_hour)) + geom_histogram(binwidth=1) + 
+  theme_bw() + scale_y_continuous(expand=c(0,0)) +
+  labs(x=&quot;Time of max activity (hour in a day)&quot;, y=&quot;# of users&quot;)</code></pre>
+<p><img src="firstlook_files/figure-html/max%20hour-1.png" width="672" /></p>
+<p><strong>Relating time between transactions to attrition.</strong> We’re interested in knowing when users will stop using CompanyX. Here I looked at whether there was a relationship between the time since last transaction and the time to the next. There does appear to be a relationship between time since the last transaction and the time to the next. I’m also trying to figure out whether the “time from the last observed transaction to the end of the observation period” compared to the “normal transaction rate” is informative. Stay tuned as I continue to work on integrating this information.</p>
+<pre class="r"><code># We&#39;re interested when users stop using CompanyX. Is there a relationship between the time since last transaction and the time to the next?
+get_rows = df$repeat_user == &quot;(10,Inf]&quot; &amp; !is.na(df$time_to_next_transaction) &amp; !is.na(df$time_since_last_transaction)
+repeat_users = df[get_rows,] %&gt;% select(time_since_last_transaction, time_to_next_transaction, amount_in_dollars)</code></pre>
+<pre><code>## Adding missing grouping variables: `user`, `username`</code></pre>
+<pre class="r"><code>repeat_users = repeat_users[sample(1:nrow(repeat_users), 1e4),] # plot a sampling of transactions to keep computer happy
+repeat_users$time_since_last_transaction = as.numeric(repeat_users$time_since_last_transaction)
+repeat_users$time_to_next_transaction = as.numeric(repeat_users$time_to_next_transaction)
+
+repeat_users %&gt;%
+  ggplot(aes(x=time_since_last_transaction+1e-3, y=time_to_next_transaction+1e-3)) + 
+  geom_point(alpha=0.2) + scale_x_log10() + scale_y_log10() + theme_bw() + 
+  labs(x=&quot;Time since last transaction (s)&quot;, y=&quot;Time to next transaction (s)&quot;)</code></pre>
+<p><img src="firstlook_files/figure-html/transaction%20time-1.png" width="672" /></p>
+<pre class="r"><code>plotme = merge(df_summary, last25, by=&quot;user&quot;)
+plotme$above = plotme$time_between_transactions_mean + plotme$time_between_transactions_sd
+
+plotme %&gt;% filter(total_transactions &gt; 3) %&gt;%
+  ggplot(aes(x=log(time_since_final_transaction/time_between_transactions_mean), fill=label)) + 
+  labs(x=&quot;logFC(Time since the final transaction / mean time between transactions)&quot;) +
+  geom_density(alpha=0.5) + theme_bw() + theme(legend.title=element_blank())</code></pre>
+<pre><code>## Warning: Removed 7 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="firstlook_files/figure-html/transaction%20time-2.png" width="672" /></p>
+<pre class="r"><code>plotme %&gt;% filter(total_transactions &gt; 3) %&gt;%
+  ggplot(aes(x=above, y=time_since_final_transaction, color=label)) + 
+  geom_point(alpha=0.1) + theme_bw() + scale_y_log10() + scale_x_log10() +
+  labs(y=&quot;Time between final transaction and end of obs period (s)&quot;, x=&quot;Two SDs above mean time between transactions (s)&quot;)</code></pre>
+<pre><code>## Warning: Removed 29 rows containing missing values (geom_point).</code></pre>
+<p><img src="firstlook_files/figure-html/transaction%20time-3.png" width="672" /></p>
+<pre class="r"><code># rmarkdown::render_site()</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
