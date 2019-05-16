@@ -10,4 +10,4 @@ navbar:
     - text: "Fraud"
       href: fraud.html
 output: html_document
-theme: jekyll-theme-slate
+theme: cayman
