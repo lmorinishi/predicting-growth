@@ -1,6 +1,8 @@
 # predicting-growth
 Here I predict user churn and future growth, using information from 9 months of user history. This site is a work in progress, as I clean up my original notebooks for human readability. Check back for updates!
 
+Homepage: https://lmorinishi.github.io/predicting-growth/
+
 ### Background
 
 Given a dataset of user transaction history from CompanyX over time, I wanted to classify users in ways that can be useful for Sales, Product, and other teams.

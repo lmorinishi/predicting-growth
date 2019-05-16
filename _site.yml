@@ -10,4 +10,3 @@ navbar:
     - text: "Fraud"
       href: fraud.html
 output: html_document
-theme: cayman
